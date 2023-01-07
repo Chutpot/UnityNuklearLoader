@@ -1,0 +1,3 @@
+[submodule "3rdparty/nuklear"]
+	path = 3rdparty/nuklear
+	url = git@github.com:Immediate-Mode-UI/Nuklear.git
