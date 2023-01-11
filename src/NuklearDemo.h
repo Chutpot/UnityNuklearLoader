@@ -14,4 +14,3 @@ private:
 	struct nk_colorf m_bg;
 	bool m_isRendering;
 };
-

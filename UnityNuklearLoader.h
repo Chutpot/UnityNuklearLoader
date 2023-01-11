@@ -20,7 +20,7 @@
 #define UNITY_NUKLEAR_LOADER_API __declspec(dllexport)
 #endif
 #elif defined(__MACH__) || defined(__ANDROID__) || defined(__linux__)
-#define IMGUI_LOADER_API
+#define UNITY_NUKLEAR_LOADER_API
 #endif
 #endif // !UNITY_NUKLEAR_LOADER_API
 
