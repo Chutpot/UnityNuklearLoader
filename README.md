@@ -26,4 +26,4 @@ Creating a cross platform ready to use IMGUI library with a minimal dependency. 
 | Metal                   | :x:                |
 
 ## Gallery
-![Screenshot](.github/images/loader_image.png)
+![Screenshot](.github/images/loader_image.PNG)
