@@ -85,6 +85,8 @@ nk_group_end
 nk_group_scrolled_offset_begin
 nk_group_scrolled_begin
 nk_group_scrolled_end
+nk_group_get_scroll
+nk_group_set_scroll
 
 nk_tree_push_hashed
 nk_tree_image_push_hashed

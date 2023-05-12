@@ -66,15 +66,11 @@ namespace UnityNuklearLoader
 
     static void Render()
     {
-        nk_input_end(g_nuklearContext);
-
         for (NuklearApp* app : *g_apps)
         {
             app->Render(g_nuklearContext);
         }
-
         nk_d3d11_render(context, NK_ANTI_ALIASING_ON);
-        nk_input_begin(g_nuklearContext);
     }
 
     extern void UNITY_NUKLEAR_LOADER_API RegisterNuklearApp(NuklearApp* app)
@@ -91,25 +87,25 @@ namespace UnityNuklearLoader
     {
         switch (eventType)
         {
-        case kUnityGfxDeviceEventInitialize:
-        {
-            s_DeviceType = s_Graphics->GetRenderer();
-            UnityNuklearLoader::InitializeNuklearLoader();
-            break;
-        }
-        case kUnityGfxDeviceEventShutdown:
-        {
-            s_DeviceType = kUnityGfxRendererNull;
-            break;
-        }
-        case kUnityGfxDeviceEventBeforeReset:
-        {
-            break;
-        }
-        case kUnityGfxDeviceEventAfterReset:
-        {
-            break;
-        }
+            case kUnityGfxDeviceEventInitialize:
+            {
+                s_DeviceType = s_Graphics->GetRenderer();
+                UnityNuklearLoader::InitializeNuklearLoader();
+                break;
+            }
+            case kUnityGfxDeviceEventShutdown:
+            {
+                s_DeviceType = kUnityGfxRendererNull;
+                break;
+            }
+            case kUnityGfxDeviceEventBeforeReset:
+            {
+                break;
+            }
+            case kUnityGfxDeviceEventAfterReset:
+            {
+                break;
+            }
         };
     }
 
@@ -130,145 +126,57 @@ namespace UnityNuklearLoader
         UnityNuklearLoader::Render();
     }
 
-    static void HandleMouseInput(float posX, float posY, float scrollDeltaX, float scrollDeltaY);
-    static void HandleKeyboardInput(UnityKeyCode keycode, bool down);
+    // UNITY INTERACTION EXPORTS
 
-    static void HandleMouseInput(float posX, float posY, float scrollDeltaX, float scrollDeltaY)
+
+    extern "C" UnityRenderingEvent UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API GetRenderEventFunc()
+    {
+        return UnityNuklearLoader::OnRenderEvent;
+    }
+
+    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API ChangeViewport(int width, int height)
+    {
+        nk_d3d11_resize(context, width, height);
+    }
+
+    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetIsDemoRendering(bool isRendering)
+    {
+        UnityNuklearLoader::g_demo->SetRender(isRendering);
+    }
+
+    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetCharInput(char c)
+    {
+        nk_input_unicode(UnityNuklearLoader::g_nuklearContext, c);
+    }
+
+    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetKeyboardInput(int key, bool isDown)
+    {
+        nk_input_key(UnityNuklearLoader::g_nuklearContext, (nk_keys)key, isDown);
+    }
+
+
+    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetButtonInput(int key, bool isDown)
+    {
+        nk_input_button(UnityNuklearLoader::g_nuklearContext, (nk_buttons)key, g_nuklearContext->input.mouse.pos.x, UnityNuklearLoader::g_nuklearContext->input.mouse.pos.y, isDown);
+    }
+
+    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetMouseInput(float posX, float posY, float scrollDeltaX, float scrollDeltaY)
     {
         nk_input_motion(UnityNuklearLoader::g_nuklearContext, posX, posY);
         nk_input_scroll(UnityNuklearLoader::g_nuklearContext, nk_vec2(scrollDeltaX, scrollDeltaY));
     }
 
-    static void HandleKeyboardInput(UnityKeyCode keycode, bool down)
+    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetInputState(bool isOpen)
     {
-        switch (keycode)
-        {
-        case UnityKeyCode::LeftShift:
-        case UnityKeyCode::RightShift:
-            nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_SHIFT, down);
-            return;
-
-        case UnityKeyCode::Delete:
-            nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_DEL, down);
-            return;
-
-        case UnityKeyCode::Return:
-            nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_ENTER, down);
-            return;
-
-        case UnityKeyCode::Tab:
-            nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_TAB, down);
-            return;
-
-        case UnityKeyCode::LeftArrow:
-            switch (keycode)
-            {
-            case (UnityKeyCode::LeftControl):
-                nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_TEXT_WORD_LEFT, down);
-            default:
-                nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_LEFT, down);
-                return;
-            }
-        case UnityKeyCode::RightArrow:
-            switch (keycode)
-            {
-            case (UnityKeyCode::LeftControl):
-                nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_TEXT_WORD_RIGHT, down);
-            default:
-                nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_RIGHT, down);
-                return;
-            }
-
-
-        case UnityKeyCode::Backspace:
-            nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_BACKSPACE, down);
-            return;
-
-        case UnityKeyCode::Home:
-            nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_TEXT_START, down);
-            nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_SCROLL_START, down);
-            return;
-
-        case UnityKeyCode::End:
-            nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_TEXT_END, down);
-            nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_SCROLL_END, down);
-            return;
-
-        case UnityKeyCode::PageDown:
-            nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_SCROLL_DOWN, down);
-            return;
-
-        case UnityKeyCode::PageUp:
-            nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_SCROLL_UP, down);
-            return;
-
-        case UnityKeyCode::C:
-            switch (keycode)
-            {
-            case UnityKeyCode::LeftControl:
-                nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_COPY, down);
-                return;
-            }
-            break;
-
-        case UnityKeyCode::V:
-            switch (keycode)
-            {
-            case UnityKeyCode::LeftControl:
-                nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_PASTE, down);
-                return;
-            }
-            break;
-
-        case UnityKeyCode::X:
-            switch (keycode)
-            {
-            case UnityKeyCode::LeftControl:
-                nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_CUT, down);
-                return;
-            }
-            break;
-
-        case UnityKeyCode::Z:
-            switch (keycode)
-            {
-            case UnityKeyCode::LeftControl:
-                nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_TEXT_UNDO, down);
-                return;
-            }
-            break;
-
-        case UnityKeyCode::R:
-            switch (keycode)
-            {
-            case UnityKeyCode::LeftControl:
-                nk_input_key(UnityNuklearLoader::g_nuklearContext, NK_KEY_TEXT_REDO, down);
-                return;
-            }
-            break;
-            return;
-
-        case UnityKeyCode::Mouse0:
-            nk_input_button(UnityNuklearLoader::g_nuklearContext, NK_BUTTON_DOUBLE, UnityNuklearLoader::g_nuklearContext->input.mouse.pos.x, UnityNuklearLoader::g_nuklearContext->input.mouse.pos.y, down);
-            nk_input_button(UnityNuklearLoader::g_nuklearContext, NK_BUTTON_LEFT, UnityNuklearLoader::g_nuklearContext->input.mouse.pos.x, UnityNuklearLoader::g_nuklearContext->input.mouse.pos.y, down);
-            return;
-
-        case UnityKeyCode::Mouse1:
-            nk_input_button(UnityNuklearLoader::g_nuklearContext, NK_BUTTON_RIGHT, UnityNuklearLoader::g_nuklearContext->input.mouse.pos.x, UnityNuklearLoader::g_nuklearContext->input.mouse.pos.y, down);
-            return;
-
-        case UnityKeyCode::Mouse2:
-            nk_input_button(UnityNuklearLoader::g_nuklearContext, NK_BUTTON_MIDDLE, UnityNuklearLoader::g_nuklearContext->input.mouse.pos.x, UnityNuklearLoader::g_nuklearContext->input.mouse.pos.y, down);
-            return;
+        if (isOpen) {
+            nk_input_begin(g_nuklearContext);
         }
-
-        return;
+        else
+        {
+            nk_input_end(g_nuklearContext);
+        }
     }
-
 }
-
-
-// UNITY INTERACTION EXPORTS
 
 void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces* unityInterfaces)
 {
@@ -288,29 +196,4 @@ void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces
 
 void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityPluginUnload()
 {
-}
-
-extern "C" UnityRenderingEvent UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API GetRenderEventFunc()
-{
-    return UnityNuklearLoader::OnRenderEvent;
-}
-
-extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API ChangeViewport(int width, int height)
-{
-    nk_d3d11_resize(context, width, height);
-}
-
-extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetIsDemoRendering(bool isRendering)
-{
-    UnityNuklearLoader::g_demo->SetRender(isRendering);
-}
-
-extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetKeyboardInput(UnityKeyCode key, bool isDown)
-{
-    UnityNuklearLoader::HandleKeyboardInput(key, isDown);
-}
-
-extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetMousePosition(float posX, float posY, float scrollDeltaX, float scrollDeltaY)
-{
-    UnityNuklearLoader::HandleMouseInput(posX, posY, scrollDeltaX, scrollDeltaY);
 }

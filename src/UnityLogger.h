@@ -6,7 +6,7 @@
 extern "C"
 {
     //Create a callback delegate
-    typedef void(*FuncCallBack)(const char* message, int size);
+    using FuncCallBack = void(*)(const char* message, int size);
     static FuncCallBack callbackInstance = nullptr;
     void UNITY_INTERFACE_EXPORT RegisterDebugCallback(FuncCallBack cb);
 };

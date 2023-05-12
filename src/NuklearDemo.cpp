@@ -3,7 +3,6 @@
 NuklearDemo::NuklearDemo()
 {
     m_isRendering = false;
-
     m_bg.r = 0.10f;
     m_bg.g = 0.18f;
     m_bg.b = 0.24f;
