@@ -3,7 +3,6 @@
 #include "3rdparty/Unity/IUnityGraphics.h"
 #include "3rdparty/nuklear/nuklear.h"
 #include "src/UnityKeyCode.h"
-#include "src/NuklearApp.h"
 #include "src/UnityLogger.h"
 
 #ifndef UNITY_NUKLEAR_LOADER_API
@@ -24,11 +23,6 @@
 #endif
 #endif // !UNITY_NUKLEAR_LOADER_API
 
-namespace UnityNuklearLoader
-{
-	extern void UNITY_NUKLEAR_LOADER_API RegisterNuklearApp(NuklearApp* app);
-	extern void UNITY_NUKLEAR_LOADER_API RemoveNuklearApp(NuklearApp* app);
-}
 
 namespace UnityLogger
 {

@@ -16,7 +16,6 @@
 #include "..\UnityNuklearLoader.h"
 #include "..\3rdparty\nuklear\demo\d3d11\nuklear_d3d11.h"
 #include "..\3rdparty\Unity\IUnityGraphicsD3D11.h"
-#include "NuklearDemo.h"
 #include "UnityLogger.h"
 #include <vector>
 #include <iostream>
@@ -42,9 +41,7 @@ static ID3D11RenderTargetView* rt_view;
 
 namespace UnityNuklearLoader
 {
-    static std::vector<NuklearApp*>* g_apps = nullptr;
     static nk_context* g_nuklearContext = nullptr;
-    static NuklearDemo* g_demo = nullptr;
 
     static void InitializeNuklearLoader()
     {
@@ -53,34 +50,15 @@ namespace UnityNuklearLoader
         ID3D11Device_GetImmediateContext(device, &context);
         g_nuklearContext = nk_d3d11_init(device, WINDOW_WIDTH, WINDOW_HEIGHT, MAX_VERTEX_BUFFER, MAX_INDEX_BUFFER);
 
-        g_apps = new std::vector <NuklearApp*>();
-
         {struct nk_font_atlas* atlas;
         nk_d3d11_font_stash_begin(&atlas);
         nk_d3d11_font_stash_end();
         }
-
-        g_demo = new NuklearDemo();
-        RegisterNuklearApp(g_demo);
     }
 
     static void Render()
     {
-        for (NuklearApp* app : *g_apps)
-        {
-            app->Render(g_nuklearContext);
-        }
         nk_d3d11_render(context, NK_ANTI_ALIASING_ON);
-    }
-
-    extern void UNITY_NUKLEAR_LOADER_API RegisterNuklearApp(NuklearApp* app)
-    {
-        g_apps->push_back(app);
-    }
-
-    extern void UNITY_NUKLEAR_LOADER_API RemoveNuklearApp(NuklearApp* app)
-    {
-        g_apps->erase(std::remove(g_apps->begin(), g_apps->end(), app), g_apps->end());
     }
 
     static void UNITY_INTERFACE_API OnGraphicsDeviceEvent(UnityGfxDeviceEventType eventType)
@@ -139,11 +117,6 @@ namespace UnityNuklearLoader
         nk_d3d11_resize(context, width, height);
     }
 
-    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetIsDemoRendering(bool isRendering)
-    {
-        UnityNuklearLoader::g_demo->SetRender(isRendering);
-    }
-
     extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetCharInput(char c)
     {
         nk_input_unicode(UnityNuklearLoader::g_nuklearContext, c);
@@ -175,6 +148,11 @@ namespace UnityNuklearLoader
         {
             nk_input_end(g_nuklearContext);
         }
+    }
+
+    extern "C"  UNITY_INTERFACE_EXPORT nk_context* UNITY_INTERFACE_API GetContext()
+    {
+        return g_nuklearContext;
     }
 }
 
