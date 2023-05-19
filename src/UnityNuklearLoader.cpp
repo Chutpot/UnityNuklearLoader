@@ -117,38 +117,6 @@ namespace UnityNuklearLoader
         nk_d3d11_resize(context, width, height);
     }
 
-    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetCharInput(char c)
-    {
-        nk_input_unicode(UnityNuklearLoader::g_nuklearContext, c);
-    }
-
-    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetKeyboardInput(int key, bool isDown)
-    {
-        nk_input_key(UnityNuklearLoader::g_nuklearContext, (nk_keys)key, isDown);
-    }
-
-
-    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetButtonInput(int key, bool isDown)
-    {
-        nk_input_button(UnityNuklearLoader::g_nuklearContext, (nk_buttons)key, g_nuklearContext->input.mouse.pos.x, UnityNuklearLoader::g_nuklearContext->input.mouse.pos.y, isDown);
-    }
-
-    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetMouseInput(float posX, float posY, float scrollDeltaX, float scrollDeltaY)
-    {
-        nk_input_motion(UnityNuklearLoader::g_nuklearContext, posX, posY);
-        nk_input_scroll(UnityNuklearLoader::g_nuklearContext, nk_vec2(scrollDeltaX, scrollDeltaY));
-    }
-
-    extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetInputState(bool isOpen)
-    {
-        if (isOpen) {
-            nk_input_begin(g_nuklearContext);
-        }
-        else
-        {
-            nk_input_end(g_nuklearContext);
-        }
-    }
 
     extern "C"  UNITY_INTERFACE_EXPORT nk_context* UNITY_INTERFACE_API GetContext()
     {

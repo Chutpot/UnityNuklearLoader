@@ -12,42 +12,42 @@ void send_log(const std::stringstream& ss) {
         callbackInstance(tmsg, (int)strlen(tmsg));
 }
 
-void UNITY_NUKLEAR_LOADER_API UnityLogger::Log(const char* message) {
+void UnityLogger::Log(const char* message) {
     if (callbackInstance != nullptr)
         callbackInstance(message,(int)strlen(message));
 }
 
-void UNITY_NUKLEAR_LOADER_API UnityLogger::Log(const std::string message) {
+void UnityLogger::Log(const std::string message) {
     const char* tmsg = message.c_str();
     if (callbackInstance != nullptr)
         callbackInstance(tmsg, (int)strlen(tmsg));
 }
 
-void UNITY_NUKLEAR_LOADER_API UnityLogger::Log(const int message) {
+void UnityLogger::Log(const int message) {
     std::stringstream ss;
     ss << message;
     send_log(ss);
 }
 
-void UNITY_NUKLEAR_LOADER_API UnityLogger::Log(const char message) {
+void UnityLogger::Log(const char message) {
     std::stringstream ss;
     ss << message;
     send_log(ss);
 }
 
-void UNITY_NUKLEAR_LOADER_API UnityLogger::Log(const float message) {
+void UnityLogger::Log(const float message) {
     std::stringstream ss;
     ss << message;
     send_log(ss);
 }
 
-void UNITY_NUKLEAR_LOADER_API UnityLogger::Log(const double message) {
+void UnityLogger::Log(const double message) {
     std::stringstream ss;
     ss << message;
     send_log(ss);
 }
 
-void UNITY_NUKLEAR_LOADER_API UnityLogger::Log(const bool message) {
+void UnityLogger::Log(const bool message) {
     std::stringstream ss;
     if (message)
         ss << "true";
@@ -58,6 +58,6 @@ void UNITY_NUKLEAR_LOADER_API UnityLogger::Log(const bool message) {
 }
 
 //Create a callback delegate
-void UNITY_NUKLEAR_LOADER_API RegisterDebugCallback(FuncCallBack cb) {
+void UNITY_INTERFACE_EXPORT RegisterDebugCallback(FuncCallBack cb) {
     callbackInstance = cb;
 }
