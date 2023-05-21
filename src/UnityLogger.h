@@ -2,6 +2,7 @@
 #pragma once
 
 #include <string>
+#include "..\3rdparty\Unity\IUnityInterface.h"
 
 extern "C"
 {

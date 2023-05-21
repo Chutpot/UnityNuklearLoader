@@ -1,9 +1,6 @@
 #pragma once
 
-#include "3rdparty/Unity/IUnityGraphics.h"
-#include "3rdparty/nuklear/nuklear.h"
-#include "src/UnityKeyCode.h"
-#include "src/UnityLogger.h"
+#include "..\src\UnityLogger.h"
 
 namespace UnityLogger
 {

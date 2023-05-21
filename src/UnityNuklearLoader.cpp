@@ -1,64 +1,24 @@
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(_WIN64) || defined(WINAPI_FAMILY)
-#define CINTERFACE
-#define D3D11_NO_HELPERS
-#define NK_D3D11_IMPLEMENTATION
-#endif 
+#include "IUnityRenderer.h"
+#include "UnityNuklearLoader.h"
 
-#define NK_INCLUDE_FIXED_TYPES
-#define NK_INCLUDE_STANDARD_IO
-#define NK_INCLUDE_STANDARD_VARARGS
-#define NK_INCLUDE_DEFAULT_ALLOCATOR
-#define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
-#define NK_INCLUDE_FONT_BAKING
-#define NK_INCLUDE_DEFAULT_FONT
-#define NK_IMPLEMENTATION
-
-#include "..\UnityNuklearLoader.h"
-#include "..\3rdparty\nuklear\demo\d3d11\nuklear_d3d11.h"
-#include "..\3rdparty\Unity\IUnityGraphicsD3D11.h"
-#include "UnityLogger.h"
-#include <vector>
-#include <iostream>
-#include <sstream>
-#include <string>
-
-//These static variables will be refactored when graphics API will be non-hardcoded
 static IUnityInterfaces* s_UnityInterfaces = nullptr;
 static IUnityGraphics* s_Graphics = nullptr;
 static UnityGfxRenderer s_DeviceType = kUnityGfxRendererNull;
-
-static IDXGISwapChain* swap_chain;
-static ID3D11Device* device;
-static ID3D11DeviceContext* context;
-static ID3D11RenderTargetView* rt_view;
-
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
-
-#define MAX_VERTEX_BUFFER 512 * 1024
-#define MAX_INDEX_BUFFER 128 * 1024
 
 
 namespace UnityNuklearLoader
 {
     static nk_context* g_nuklearContext = nullptr;
+    static IUnityRenderer* g_renderer = nullptr;
 
     static void InitializeNuklearLoader()
     {
-        IUnityGraphicsD3D11* d3d = s_UnityInterfaces->Get<IUnityGraphicsD3D11>();
-        ID3D11Device* device = d3d->GetDevice();
-        ID3D11Device_GetImmediateContext(device, &context);
-        g_nuklearContext = nk_d3d11_init(device, WINDOW_WIDTH, WINDOW_HEIGHT, MAX_VERTEX_BUFFER, MAX_INDEX_BUFFER);
-
-        {struct nk_font_atlas* atlas;
-        nk_d3d11_font_stash_begin(&atlas);
-        nk_d3d11_font_stash_end();
-        }
+        g_renderer = IUnityRenderer::CreateRendererAPI(s_DeviceType, s_UnityInterfaces, &g_nuklearContext);
     }
 
     static void Render()
     {
-        nk_d3d11_render(context, NK_ANTI_ALIASING_ON);
+        g_renderer->Render();
     }
 
     static void UNITY_INTERFACE_API OnGraphicsDeviceEvent(UnityGfxDeviceEventType eventType)
@@ -114,7 +74,7 @@ namespace UnityNuklearLoader
 
     extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API ChangeViewport(int width, int height)
     {
-        nk_d3d11_resize(context, width, height);
+        g_renderer->Resize(width, height);
     }
 
 

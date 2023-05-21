@@ -2,12 +2,15 @@ set(UNITYNUKLEARLOADER_PROJECT_SRC
 	UnityNuklearLoader.def
 	UnityNuklearLoader.cpp
 	UnityLogger.cpp
+	IUnityRenderer.cpp
+	D3D11Renderer.cpp
 )
 
 set(UNITYNUKLEARLOADER_PROJECT_HEADER
-	${UNITYNUKLEARLOADER_SOURCE_DIR}/UnityNuklearLoader.h
+	UnityNuklearLoader.h
 	UnityLogger.h
-	UnityKeyCode.h
+	IUnityRenderer.h
+	D3D11Renderer.h
 )
 
 add_library(UnityNuklearLoader SHARED ${UNITYNUKLEARLOADER_PROJECT_SRC} ${UNITYNUKLEARLOADER_PROJECT_HEADER})
