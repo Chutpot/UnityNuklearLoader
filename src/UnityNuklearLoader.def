@@ -548,3 +548,14 @@ nk_draw_list_add_text
 nk_style_item_image
 nk_style_item_color
 nk_style_item_hide
+
+nk_d3d11_init
+nk_d3d11_font_stash_begin
+nk_d3d11_font_stash_end
+nk_d3d11_resize
+nk_d3d12_resize
+nk_d3d12_init
+nk_d3d12_font_stash_begin
+nk_d3d12_font_stash_end
+nk_d3d12_font_stash_cleanup
+nk_d3d12_render

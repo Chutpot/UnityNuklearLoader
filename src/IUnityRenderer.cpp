@@ -1,16 +1,7 @@
-#define NK_IMPLEMENTATION
-
 #include "IUnityRenderer.h"
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(_WIN64) || defined(WINAPI_FAMILY)
-#define CINTERFACE
-#define D3D11_NO_HELPERS
-#define NK_D3D11_IMPLEMENTATION
-#include "..\3rdparty\nuklear\demo\d3d11\nuklear_d3d11.h"
-#include "..\3rdparty\Unity\IUnityGraphicsD3D11.h"
 #include "D3D11Renderer.h"
-#endif 
-
+#include "D3D12Renderer.h"
 
 IUnityRenderer* IUnityRenderer::CreateRendererAPI(UnityGfxRenderer apiType, IUnityInterfaces* unityInterfaces, nk_context** ctx)
 {
@@ -18,14 +9,10 @@ IUnityRenderer* IUnityRenderer::CreateRendererAPI(UnityGfxRenderer apiType, IUni
 	{
 		return new D3D11Renderer(unityInterfaces, ctx);
 	}
-
-#	if SUPPORT_D3D12
-	if (apiType == kUnityGfxRendererD3D12)
+	else if (apiType == kUnityGfxRendererD3D12)
 	{
-		extern RenderAPI* CreateRenderAPI_D3D12();
-		return CreateRenderAPI_D3D12();
+		return new D3D12Renderer(unityInterfaces, ctx);
 	}
-#	endif // if SUPPORT_D3D12
 
 
 #	if SUPPORT_OPENGL_UNIFIED
