@@ -1,63 +1,24 @@
-//reference https ://stackoverflow.com/questions/43732825/use-debug-log-from-c
+#include "UnityLogger.h"
+#include <IUnityInterface.h>
 
-#include "UnityNuklearLoader.h"
+static IUnityLog* s_logger;
 
-#include <stdio.h>
-#include <sstream>
-
-void send_log(const std::stringstream& ss) {
-    const std::string tmp = ss.str();
-    const char* tmsg = tmp.c_str();
-    if (callbackInstance != nullptr)
-        callbackInstance(tmsg, (int)strlen(tmsg));
+void UnityLogger::Initialize(IUnityInterfaces* unityInterfaces)
+{
+	s_logger = unityInterfaces->Get<IUnityLog>();
 }
 
-void UnityLogger::Log(const char* message) {
-    if (callbackInstance != nullptr)
-        callbackInstance(message,(int)strlen(message));
+void UnityLogger::Log(const char* msg) 
+{
+	UNITY_LOG(s_logger, msg);
 }
 
-void UnityLogger::Log(const std::string message) {
-    const char* tmsg = message.c_str();
-    if (callbackInstance != nullptr)
-        callbackInstance(tmsg, (int)strlen(tmsg));
+void UnityLogger::LogError(const char* msg)
+{
+	UNITY_LOG_ERROR(s_logger, msg);
 }
 
-void UnityLogger::Log(const int message) {
-    std::stringstream ss;
-    ss << message;
-    send_log(ss);
-}
-
-void UnityLogger::Log(const char message) {
-    std::stringstream ss;
-    ss << message;
-    send_log(ss);
-}
-
-void UnityLogger::Log(const float message) {
-    std::stringstream ss;
-    ss << message;
-    send_log(ss);
-}
-
-void UnityLogger::Log(const double message) {
-    std::stringstream ss;
-    ss << message;
-    send_log(ss);
-}
-
-void UnityLogger::Log(const bool message) {
-    std::stringstream ss;
-    if (message)
-        ss << "true";
-    else
-        ss << "false";
-
-    send_log(ss);
-}
-
-//Create a callback delegate
-void UNITY_INTERFACE_EXPORT RegisterDebugCallback(FuncCallBack cb) {
-    callbackInstance = cb;
+void UnityLogger::LogWarning(const char* msg)
+{
+	UNITY_LOG_WARNING(s_logger, msg);
 }

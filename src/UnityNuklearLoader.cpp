@@ -1,5 +1,5 @@
 #include "IUnityRenderer.h"
-#include "UnityNuklearLoader.h"
+#include "UnityLogger.h"
 
 static IUnityInterfaces* s_UnityInterfaces = nullptr;
 static IUnityGraphics* s_Graphics = nullptr;
@@ -97,6 +97,7 @@ void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces
         RenderAPI_Vulkan_OnPluginLoad(unityInterfaces);
     }
 #endif // SUPPORT_VULKAN
+    UnityLogger::Initialize(s_UnityInterfaces);
     UnityNuklearLoader::OnGraphicsDeviceEvent(kUnityGfxDeviceEventInitialize);
 }
 

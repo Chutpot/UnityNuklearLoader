@@ -1,5 +1,5 @@
 set(UNITYNUKLEARLOADER_PROJECT_SRC
-	UnityNuklearLoader.cpp
+    UnityNuklearLoader.cpp
 	IUnityRenderer.cpp
 	D3D11Renderer.cpp
 	D3D12Renderer.cpp
@@ -9,7 +9,6 @@ set(UNITYNUKLEARLOADER_PROJECT_SRC
 )
 
 set(UNITYNUKLEARLOADER_PROJECT_HEADER
-	UnityNuklearLoader.h
 	UnityLogger.h
 	IUnityRenderer.h
 	D3D11Renderer.h
