@@ -18,5 +18,6 @@ set(UNITYNUKLEARLOADER_PROJECT_HEADER
 
 
 add_library(UnityNuklearLoader SHARED ${UNITYNUKLEARLOADER_PROJECT_SRC} ${UNITYNUKLEARLOADER_PROJECT_HEADER})
+target_include_directories(UnityNuklearLoader PUBLIC "${PROJECT_SOURCE_DIR}\\3rdparty\\Unity\\")
 link_libraries(UnityNuklearLoader NuklearImplemantation)
 set_property(GLOBAL PROPERTY VS_STARTUP_PROJECT UnityNuklearLoader)
