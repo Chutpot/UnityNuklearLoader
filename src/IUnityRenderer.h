@@ -8,8 +8,8 @@
 #define NK_INCLUDE_FONT_BAKING
 #define NK_INCLUDE_DEFAULT_FONT
 
-#include "..\3rdparty\Unity\IUnityGraphics.h"
-#include "..\3rdparty\nuklear\nuklear.h"
+#include <IUnityGraphics.h>
+#include <nuklear.h>
 
 
 class IUnityRenderer

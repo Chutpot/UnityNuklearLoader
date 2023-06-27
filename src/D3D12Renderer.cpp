@@ -15,9 +15,9 @@
 #include "D3D12Renderer.h"
 extern "C"
 {
-#include "..\3rdparty\nuklear\demo\d3d12\nuklear_d3d12.h"
+#include <nuklear_d3d12.h>
 }
-#include "..\3rdparty\Unity\IUnityGraphicsD3D12.h"
+#include <IUnityGraphicsD3D12.h>
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600

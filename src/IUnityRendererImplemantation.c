@@ -7,14 +7,14 @@
 #define NK_INCLUDE_DEFAULT_FONT
 
 #define NK_IMPLEMENTATION
-#include "..\3rdparty\nuklear\nuklear.h"
+#include <nuklear.h>
 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(_WIN64) || defined(WINAPI_FAMILY)
 #include <initguid.h>
 #include <dshow.h>
 #include <stdio.h>
 #include <Windows.h>
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(_WIN64) || defined(WINAPI_FAMILY)
 #define NK_D3D11_IMPLEMENTATION
 #define NK_D3D12_IMPLEMENTATION
 #define CINTERFACE
@@ -24,6 +24,6 @@
 
 #include <d3d11.h>
 #include <d3d12.h>
-#include "..\3rdparty\nuklear\demo\d3d11\nuklear_d3d11.h"
-#include "..\3rdparty\nuklear\demo\d3d12\nuklear_d3d12.h"
+#include <nuklear_d3d11.h>
+#include <nuklear_d3d12.h>
 #endif

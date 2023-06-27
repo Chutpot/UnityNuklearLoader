@@ -8,9 +8,9 @@
 #include "D3D11Renderer.h"
 extern "C" 
 {
-#include "..\3rdparty\nuklear\demo\d3d11\nuklear_d3d11.h"
+#include <nuklear_d3d11.h>
 }
-#include "..\3rdparty\Unity\IUnityGraphicsD3D11.h"
+#include <IUnityGraphicsD3D11.h>
 
 static IDXGISwapChain* swap_chain;
 static ID3D11Device* device;
